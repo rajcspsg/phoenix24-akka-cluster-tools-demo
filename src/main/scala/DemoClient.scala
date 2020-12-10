@@ -13,11 +13,12 @@ object DemoClient {
        }
 
        remote {
-         transport = "akka.remote.netty.NettyRemoteTransport"
-         log-remote-lifecycle-events = off
-         netty.tcp {
-          hostname = "localhost"
-          port = 5000
+          artery {
+            transport = tcp
+            canonical {
+             hostname = "localhost"
+             port = 5000
+            }
          }
        }
      }""")
@@ -25,7 +26,7 @@ object DemoClient {
     val system = ActorSystem("OUTSIDER-SYSTEM", ConfigFactory.load(config))
 
     val initialContacts = Set(
-      ActorPath.fromString("akka.tcp://ClusterSystem@localhost:2551/system/receptionist"))
+      ActorPath.fromString("akka://ClusterSystem@localhost:2551/system/receptionist"))
 
 
     val cc = system.actorOf(ClusterClient.props(

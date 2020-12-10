@@ -14,16 +14,17 @@ object DemoMaster {
          provider = "akka.cluster.ClusterActorRefProvider"
        }
        remote {
-         transport = "akka.remote.netty.NettyRemoteTransport"
-         log-remote-lifecycle-events = off
-         netty.tcp {
-           hostname = "localhost"
-           port = 2551
+         artery {
+           transport = tcp
+           canonical {
+             hostname = "localhost"
+             port = 2551
+           }
          }
        }
        cluster {
          seed-nodes = [
-           "akka.tcp://ClusterSystem@localhost:2551"
+           "akka://ClusterSystem@localhost:2551"
            ]
          roles = [master]
          auto-down = on
